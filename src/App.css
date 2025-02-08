@@ -1,0 +1,147 @@
+body {
+  margin: 0;
+}
+
+.cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #c38c6a;
+  flex-grow: 1;
+}
+
+.logo {
+  margin-left: 7%;
+}
+
+.logo img {
+  height: 250px;
+  max-width: 100%;
+}
+
+.nombre {
+  color: aliceblue;
+  font-size: 180%;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
+  margin: 0 auto;
+  padding-left: 20%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10%;
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: aliceblue;
+  background-color: #d79d55;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 0 10px;
+}
+
+.button:hover {
+  background-color: goldenrod;
+  color: black;
+}
+
+.button:active {
+  background-color: #A67843;
+}
+
+.menu-icon {
+  display: none;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .cactus-acres {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .piso-dos {
+    margin-top: 0 !important;
+    padding-top: 0;
+  }
+
+  .cabeza {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 30vh;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .nombre,
+  .button-container {
+    display: none!important;
+  }
+
+  .logo {
+    margin: 0 auto;
+    padding-left: 10%;
+  }
+
+  .logo img {
+    height: 100px;
+  }
+
+  .menu-icon {
+    display: block;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    position: absolute;
+    right: 15px;
+  }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: #c38c6a;
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+  }
+
+  .mobile-menu .button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #d79d55;
+    border-bottom: 1px solid white;
+  }
+
+  .mobile-menu .button:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-menu .button:hover {
+    background-color: goldenrod;
+  }
+
+  .show-menu {
+    display: flex;
+  }
+}
