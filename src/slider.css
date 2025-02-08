@@ -1,71 +1,5 @@
-body {
-  margin: 0;
-}
-
-.cabeza {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  background-color: #c38c6a;
-  padding: 50px;
-  height: auto;
-  flex-grow: 1;
-}
-
-.logo {
-  position: absolute;
-  left: 20px;
-  margin-left: 7%;
-  top: 2%;
-  /* transform: translateY(-50%); */
-}
-
-.logo img {
-  height: 250px;
-  max-width: 100%;
-}
-
-.nombre {
-  color: aliceblue;
-  font-size: 180%;
-  font-weight: bold;
-  text-align: center;
-  flex-grow: 1;
-  margin: 0 auto;
-  padding-left: 20%;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-right: 10%;
-}
-
-.button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: aliceblue;
-  background-color: #d79d55;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin: 0 10px;
-}
-
-.button:hover {
-  background-color: goldenrod;
-  color: black;
-}
-
-.button:active {
-  background-color: #A67843;
-}
-
 .todoslider {
-  background-color: #d79d55;
+  background-color: #c18031;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -163,21 +97,26 @@ body {
 @media (max-width: 768px) {
   .todoslider {
     padding-top: 10%;
-    padding-bottom: 50%;
+    padding-bottom: 40%;
+  }
+  .anuncios {
+    font-size: 80%;
   }
   .prev {
-    margin-top: 50%;
+    margin-top: 45%;
      left: 10px;
      font-size: 15px;
    }
    
    .next {
-     margin-top: 50%;
+     margin-top: 45%;
      right: 10px;
      font-size: 15px;
    }
-  .slider-container {
-    width: 500px;
+   .slider-container {
+    width: 100%;
+    max-width: 100%;
+   
   }
   .slider-image {
     max-height: 250px;
@@ -190,5 +129,26 @@ body {
     width: 100%;
     text-align: center;
     font-size: 14px;
+  }
+}
+@media (max-width: 1024px) and (max-height: 480px) {
+
+  .slider-container {
+    width: 85%;
+    max-width: 600px; /* Ajusta el tamaño del slider en horizontal */
+  }
+
+  .slider-image {
+    max-height: 300px; /* Evita que las imágenes sean demasiado grandes */
+  }
+
+  .prev, .next {
+    font-size: 18px;
+    padding: 8px;
+  }
+
+  .mobile-menu {
+    width: 130px;
+    top: 50px;
   }
 }
