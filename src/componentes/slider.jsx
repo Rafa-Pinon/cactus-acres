@@ -6,12 +6,19 @@ import imagen1 from "../imagenes/entradadefraccionamiento.jpg";
 import imagen2 from "../imagenes/corredor.jpg";
 import imagen3 from "../imagenes/corredordos.jpg";
 import imagen4 from "../imagenes/parq.jpg";
-
+import imagen5 from "../imagenes/nochelum.jpg";
+import imagen6 from "../imagenes/calleprincipal.jpg";
+import imagen7 from "../imagenes/callesecundaria.jpg";
+import imagen8 from "../imagenes/glorietaytambosdeagua.jpg";
 const images = [
   { src: imagen1, alt: "Imagen 1" },
   { src: imagen2, alt: "Imagen 2" },
   { src: imagen3, alt: "Imagen 3" },
   { src: imagen4, alt: "Imagen 4" },
+  { src: imagen5, alt: "Imagen 5" },
+  { src: imagen6, alt: "Imagen 6" },
+  { src: imagen7, alt: "Imagen 7" },
+  { src: imagen8, alt: "Imagen 8" },
 ];
 
 const texts = [

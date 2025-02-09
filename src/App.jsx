@@ -1,56 +1,88 @@
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import logo from "./imagenes/logo.png";
 import Slider from "./componentes/slider";
+import Subdivision from "./componentes/subdivision"; // Importar el componente
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="cactus-acres">
-      <div className="cabeza">
-        <div className="logo">
-          <img src={logo} alt="Logo" />
+    <Router>
+      <div className="cactus-acres">
+        <div className="cabeza">
+          <div className="logo">
+            <img src={logo} alt="Logo" />
+          </div>
+
+          <div className="nombre">
+            <h1>CACTUS ACRES</h1>
+          </div>
+
+          <div className="button-container">
+            <Link to="/" className="button">
+              Home
+            </Link>
+            <Link to="/subdivision" className="button">
+              Subdivision
+            </Link>
+            <Link to="/location" className="button">
+              Location
+            </Link>
+            <Link to="/contact" className="button">
+              Contact
+            </Link>
+          </div>
+
+          <button className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </button>
+
+          <div className={`mobile-menu ${menuOpen ? "show-menu" : ""}`}>
+            <Link to="/" className="button" onClick={() => setMenuOpen(false)}>
+              Home
+            </Link>
+            <Link
+              to="/subdivision"
+              className="button"
+              onClick={() => setMenuOpen(false)}
+            >
+              Subdivision
+            </Link>
+            <Link
+              to="/location"
+              className="button"
+              onClick={() => setMenuOpen(false)}
+            >
+              Location
+            </Link>
+            <Link
+              to="/contact"
+              className="button"
+              onClick={() => setMenuOpen(false)}
+            >
+              Contact
+            </Link>
+          </div>
         </div>
 
-        {/* Título que se ocultará en móviles */}
-        <div className="nombre">
-          <h1>CACTUS ACRES</h1>
-        </div>
-
-        {/* Menú en pantallas grandes */}
-        <div className="button-container">
-          <button className="button">Home</button>
-          <button className="button">Lotes</button>
-          <button className="button">Location</button>
-          <button className="button">Contact</button>
-        </div>
-
-        {/* Icono de menú hamburguesa SOLO en móviles */}
-        <button className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
-          ☰
-        </button>
-
-        {/* Menú hamburguesa SOLO en móviles */}
-        <div className={`mobile-menu ${menuOpen ? "show-menu" : ""}`}>
-          <button className="button" onClick={() => setMenuOpen(false)}>
-            Home
-          </button>
-          <button className="button" onClick={() => setMenuOpen(false)}>
-            Lotes
-          </button>
-          <button className="button" onClick={() => setMenuOpen(false)}>
-            Location
-          </button>
-          <button className="button" onClick={() => setMenuOpen(false)}>
-            Contact
-          </button>
-        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <div className="piso-dos">
+                  <Slider />
+                </div>
+              </>
+            }
+          />
+          <Route path="/subdivision" element={<Subdivision />} />
+          {/* Puedes agregar más rutas aquí */}
+        </Routes>
       </div>
-      <div className="piso-dos">
-        <Slider />
-      </div>
-    </div>
+    </Router>
   );
 }
 
