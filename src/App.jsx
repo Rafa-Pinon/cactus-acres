@@ -4,6 +4,8 @@ import "./App.css";
 import logo from "./imagenes/logo.png";
 import Slider from "./componentes/slider";
 import Subdivision from "./componentes/subdivision"; // Importar el componente
+import Location from "./componentes/location";
+import Contact from "./componentes/contacto";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,12 +26,13 @@ function App() {
             <Link to="/" className="button">
               Home
             </Link>
-            <Link to="/subdivision" className="button">
-              Subdivision
-            </Link>
             <Link to="/location" className="button">
               Location
             </Link>
+            <Link to="/subdivision" className="button">
+              Subdivision
+            </Link>
+
             <Link to="/contact" className="button">
               Contact
             </Link>
@@ -44,19 +47,20 @@ function App() {
               Home
             </Link>
             <Link
-              to="/subdivision"
-              className="button"
-              onClick={() => setMenuOpen(false)}
-            >
-              Subdivision
-            </Link>
-            <Link
               to="/location"
               className="button"
               onClick={() => setMenuOpen(false)}
             >
               Location
             </Link>
+            <Link
+              to="/subdivision"
+              className="button"
+              onClick={() => setMenuOpen(false)}
+            >
+              Subdivision
+            </Link>
+
             <Link
               to="/contact"
               className="button"
@@ -79,6 +83,8 @@ function App() {
             }
           />
           <Route path="/subdivision" element={<Subdivision />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/contact" element={<Contact />} />
           {/* Puedes agregar más rutas aquí */}
         </Routes>
       </div>
