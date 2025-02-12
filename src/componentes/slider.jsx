@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import "../slider.css";
 
 // Importa las imágenes desde la carpeta 'src/images'
-import imagen1 from "../imagenes/entradadefraccionamiento.jpg";
-import imagen2 from "../imagenes/corredor.jpg";
-import imagen3 from "../imagenes/corredordos.jpg";
-import imagen4 from "../imagenes/parq.jpg";
+import imagen1 from "../imagenes/entradanuevo.jpg";
+import imagen2 from "../imagenes/corredornuevo.jpg";
+import imagen3 from "../imagenes/glorietanuevo.jpg";
+import imagen4 from "../imagenes/bulevardnuevo.jpg";
 import imagen5 from "../imagenes/nochelum.jpg";
-import imagen6 from "../imagenes/calleprincipal.jpg";
-import imagen7 from "../imagenes/callesecundaria.jpg";
-import imagen8 from "../imagenes/glorietaytambosdeagua.jpg";
+import imagen6 from "../imagenes/parquenuevo.jpg";
+
 const images = [
   { src: imagen1, alt: "Imagen 1" },
   { src: imagen2, alt: "Imagen 2" },
@@ -17,8 +16,6 @@ const images = [
   { src: imagen4, alt: "Imagen 4" },
   { src: imagen5, alt: "Imagen 5" },
   { src: imagen6, alt: "Imagen 6" },
-  { src: imagen7, alt: "Imagen 7" },
-  { src: imagen8, alt: "Imagen 8" },
 ];
 
 const texts = [
