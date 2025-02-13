@@ -1,221 +1,217 @@
+/* Estilos generales para la sección */
 .todo-lotes {
   background-color: burlywood;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  padding: 20px;
 }
+
+/* Estilos para los títulos */
 .h1 {
-    display: flex;
-    justify-content: center;
-    color: black;
+  display: flex;
+  justify-content: center;
+  color: black;
 }
+
+.h1 h1 {
+  text-align: center;
+  font-size: 2.5em;
+  /* margin-bottom: 20px; */
+}
+
+/* Contenedores de lotes y info del cliente */
 .lotesyinfo {
-    display: flex;
-    border-radius: 5px;     
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.2); 
-    
+  display: flex;
+  justify-content: space-between;
+  justify-content: flex-start; /* Alinea a la izquierda */
+  gap: 10%;
+  border-radius: 20px;     
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.2); 
 }
+
 .tablatodo {
-    width: 20%;
-    margin-left: 5%;
-
+  width: 20%;
+  margin-left: 0; /* Elimina margen izquierdo */
 }
+
+/* Información del lote */
 .info-lote {
-    font-size: 150%;
-    height: 20%;
-    border-radius: 5px;     
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.2); 
-
+  font-size: 1.5em;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 20px;
+  display: inline-block;
 }
+
+.info-lote h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.info-lote p {
+  font-size: 1.1em;
+  color: #555;
+}
+
+/* Mensaje de error */
+.mensaje {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ffcccc;
+  border: 1px solid #ff6666;
+  color: #ff3333;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+/* Imagen del plano */
+.planouno {
+  width: 45%;
+}
+
 .planouno img {
-    width: 180%;
-
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-/* Subdivision styles */
 
-  
-  .seleccion-lote {
-    margin: 20px 0;
-  }
-  
-  select {
+/* Selección de lote */
+.seleccion-lote {
+  margin: 20px 0;
+}
+
+.seleccion-lote select {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2em;
+  border: 2px solid #5D4037;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.seleccion-lote select:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.seleccion-lote select:hover {
+  border-color: #8d6e63;
+}
+
+/* Estilo de opciones del select */
+option {
+  font-size: 1em;
+  padding: 10px;
+  background-color: #fff;
+  color: #0e0d0d;
+  cursor: pointer;
+}
+
+option:hover {
+  background-color: #8d6e63;
+  color: white;
+}
+
+/* Formulario de cliente */
+.formulario-cliente input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 1.1em;
+}
+
+.formulario-cliente button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2em;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.formulario-cliente button:hover {
+  background-color: #218838;
+}
+
+/* Responsive: Ajustes para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .todo-lotes {
+    background-color: rgb(241, 227, 227);
     padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
   }
-  
+
+  .h1 h1 {
+    font-size: 2em;
+  }
+
+  .lotesyinfo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tablatodo,
+  .planouno {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .info-lote {
-    margin-top: 20px;
-    background-color: #f0f0f0;
+    font-size: 1.2em;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .seleccion-lote select {
+    width: 90%;
+  }
+
+  .mensaje {
+    font-size: 1em;
+  }
+}
+
+/* Modo horizontal (Tabletas o móviles en landscape) */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .lotesyinfo {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .tablatodo {
+    width: 30%;
+  }
+
+  .info-lote {
+    font-size: 1.4em;
     padding: 15px;
-    border-radius: 5px;
-    display: inline-block;
   }
-  /* Estilo para el selector (select) */
-select {
-    padding: 20px;
-    font-size: 150%;
-    border-radius: 5px;
-    border: 2px solid #5D4037;
-    background-color: #fff;
-    color: #333;
-    cursor: pointer;
-    width: 200px; /* Ajusta el ancho según lo necesario */
-    margin: 10px;
-    transition: all 0.3s ease;
+}
+
+/* Pantallas muy pequeñas (Menos de 320px de ancho) */
+@media (max-width: 320px) {
+  .h1 h1 {
+    font-size: 1.2rem;
   }
-  
-  select:hover {
-    border-color: #8d6e63; /* Color de borde al pasar el ratón */
+
+  .info-lote {
+    font-size: 1rem;
   }
-  
-  /* Estilo para las opciones (option) */
-  option {
-    font-size: 100%;
-    padding: 10px;
-    background-color: #fff;
-    color: #0e0d0d;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
+
+  .seleccion-lote select {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
   }
-  
-  /* Cuando se pasa el mouse sobre una opción */
-  option:hover {
-    background-color: #8d6e63;
-    color: white;
-  }
-  /* Media Query para pantallas de teléfonos (en modo vertical) */
-@media (max-width: 768px) {
-    .todo-lotes {
-      background-color: rgb(241, 227, 227);
-      padding: 10px; /* Añadir algo de espacio alrededor */
-    }
-  
-    .h1 h1 {
-      font-size: 1.5rem; /* Reducir el tamaño del texto en el encabezado */
-    }
-  
-    .planouno img {
-      width: 100%; /* Asegurarse de que la imagen del plano no se salga del contenedor */
-      max-width: 100%;
-    }
-  
-    .lotesyinfo {
-      flex-direction: column; /* Cambiar a una columna en pantallas pequeñas */
-      align-items: center; /* Centrar los elementos */
-      width: 100%;
-      flex-direction: column-reverse;
-      /* padding: 20px; */
-    }
-  
-    .tablatodo {
-      width: 100%; /* Hacer que la tabla ocupe el 100% del ancho disponible */
-      margin-left: 0;
-    }
-  
-    .info-lote {
-      font-size: 120%;
-      margin-top: 20px;
-      padding: 15px;
-      width: 100%;
-    }
-  
-    .seleccion-lote select {
-      width: 90%; /* Hacer que el selector ocupe todo el ancho */
-      font-size: 1.2rem;
-      padding: 15px;
-    }
-  
-    .info-lote {
-      font-size: 1.2rem;
-      padding: 10px;
-      box-shadow: none; /* Para simplificar en pantallas pequeñas */
-    }
-  
-    .info-lote h2 {
-      font-size: 1.5rem;
-    }
-  }
-  
-  /* Media Query para pantallas de teléfonos en modo horizontal */
-  @media (max-width: 1024px) and (orientation: landscape) {
-    .todo-lotes {
-      background-color: rgb(241, 227, 227);
-      padding: 10px;
-    }
-  
-    .h1 h1 {
-      font-size: 1.8rem;
-    }
-  
-    .planouno img {
-      width: 100%; /* Ajustar imagen en horizontal */
-      max-width: 100%;
-    }
-  
-    .lotesyinfo {
-      flex-direction: row; /* Mantener la dirección en fila en pantalla horizontal */
-      justify-content: space-around; /* Asegurarse de que haya espacio entre los elementos */
-    }
-  
-    .tablatodo {
-      width: 30%;
-      margin-left: 5%;
-    }
-  
-    .info-lote {
-      font-size: 140%;
-      padding: 15px;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1), 0px 4px 6px rgba(0, 0, 0, 0.2);
-    }
-  
-    .seleccion-lote select {
-      width: 100%;
-      padding: 20px;
-      font-size: 1.3rem;
-    }
-  }
-  
-  /* Para dispositivos con pantallas muy pequeñas (por ejemplo, móviles de menos de 320px de ancho) */
-  @media (max-width: 320px) {
-    .todo-lotes {
-      background-color: rgb(241, 227, 227);
-      padding: 5px;
-    }
-  
-    .h1 h1 {
-      font-size: 1.2rem; /* Reducción más drástica del texto en pantallas muy pequeñas */
-    }
-  
-    .planouno img {
-      width: 90%; /* Ajuste para pantallas más pequeñas */
-      max-width: 100%;
-    }
-  
-    .lotesyinfo {
-      flex-direction: column;
-      padding: 10px;
-      width: 100%;
-    }
-  
-    .tablatodo {
-      width: 100%;
-      margin-left: 0;
-    }
-  
-    .info-lote {
-      font-size: 1rem;
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-    }
-  
-    .seleccion-lote select {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-    }
-  
-    .info-lote h2 {
-      font-size: 1.2rem;
-    }
-  }
-  
+}

@@ -1,12 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../subdivision.css";
-import Plano from "../imagenes/plano.png";
+import Plano from "../imagenes/distribucionplanonuevo.jpg";
 
 function Subdivision() {
-  // Estado para almacenar el lote seleccionado
   const [loteSeleccionado, setLoteSeleccionado] = useState(null);
+  const [lotesApartados, setLotesApartados] = useState([]);
+  const [clienteInfo, setClienteInfo] = useState({
+    nombre: "",
+    telefono: "",
+    direccion: "",
+  });
+  const [mensaje, setMensaje] = useState("");
 
-  // Información de los lotes (Aquí puedes ajustar las coordenadas y medidas)
+  // Cargar lotes apartados del Local Storage SOLO al cargar la página
+  useEffect(() => {
+    const lotesGuardados = localStorage.getItem("lotesApartados");
+    console.log("Lotes cargados del Local Storage:", lotesGuardados);
+
+    if (lotesGuardados) {
+      try {
+        const parsedLotes = JSON.parse(lotesGuardados);
+        if (Array.isArray(parsedLotes)) {
+          setLotesApartados(parsedLotes);
+        } else {
+          console.warn(
+            "Los lotes guardados no son un array válido:",
+            parsedLotes
+          );
+        }
+      } catch (error) {
+        console.error("Error al parsear Local Storage:", error);
+      }
+    }
+  }, []);
+
+  // Guardar en Local Storage cada vez que cambian los lotes apartados
+  useEffect(() => {
+    if (lotesApartados.length > 0) {
+      localStorage.setItem("lotesApartados", JSON.stringify(lotesApartados));
+      console.log("Lotes guardados en Local Storage:", lotesApartados);
+    } else {
+      console.log("No se guardó en Local Storage porque el array está vacío.");
+    }
+  }, [lotesApartados]);
+
+  // Información de los lotes
   const lotes = [
     { id: 1, Measurements: "10m x 12m 2,025m2" },
     { id: 2, Measurements: "12m x 15m 2,025m2" },
@@ -69,14 +107,76 @@ function Subdivision() {
     { id: 64, Measurements: "15m x 10m 2,025m2" },
     { id: 65, Measurements: "12m x 12m 2,025m2" },
     { id: 66, Measurements: "10m x 10m 2,025m2" },
-    // Agrega más lotes hasta llegar a 66
   ];
 
   // Manejar la selección del lote
   const handleLoteChange = (event) => {
     const loteId = parseInt(event.target.value);
-    const lote = lotes.find((l) => l.id === loteId);
-    setLoteSeleccionado(lote);
+    if (lotesApartados.includes(loteId)) {
+      setMensaje("Este lote ya está apartado, elige otro.");
+      setLoteSeleccionado(null);
+    } else {
+      const lote = lotes.find((l) => l.id === loteId);
+      setLoteSeleccionado(lote);
+      setMensaje("");
+    }
+  };
+
+  // Manejar el formulario de cliente
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setClienteInfo({
+      ...clienteInfo,
+      [name]: value,
+    });
+  };
+
+  // ** Apartar el lote y guardar en Local Storage **
+  const apartarLote = () => {
+    if (!loteSeleccionado) {
+      setMensaje("Por favor, selecciona un lote.");
+      return;
+    }
+    if (
+      !clienteInfo.nombre ||
+      !clienteInfo.telefono ||
+      !clienteInfo.direccion
+    ) {
+      setMensaje("Por favor, llena todos los campos.");
+      return;
+    }
+
+    // Verificar si el lote ya está apartado
+    if (lotesApartados.includes(loteSeleccionado.id)) {
+      setMensaje("Este lote ya está apartado. Elige otro.");
+      return;
+    }
+
+    // Apartar el lote
+    const nuevosLotes = [...lotesApartados, loteSeleccionado.id];
+    setLotesApartados(nuevosLotes);
+    setMensaje(`Lote ${loteSeleccionado.id} apartado con éxito.`);
+    setLoteSeleccionado(null);
+    setClienteInfo({ nombre: "", telefono: "", direccion: "" });
+  };
+
+  // ** Función para quitar un apartado con contraseña **
+  const quitarApartado = (loteId) => {
+    const contraseña = prompt(
+      "Introduce la contraseña para quitar el apartado:"
+    );
+    if (contraseña === "1234") {
+      setLotesApartados((prevLotes) => {
+        const nuevosLotes = prevLotes.filter((id) => id !== loteId);
+        console.log("Lotes actualizados después de quitar:", nuevosLotes);
+        // Guardar en Local Storage al eliminar un lote
+        localStorage.setItem("lotesApartados", JSON.stringify(nuevosLotes));
+        return nuevosLotes;
+      });
+      setMensaje(`Lote ${loteId} liberado con éxito.`);
+    } else {
+      alert("Contraseña incorrecta. No se quitó el apartado.");
+    }
   };
 
   return (
@@ -85,29 +185,78 @@ function Subdivision() {
         <h1>Choose the place where your dreams come to life</h1>
       </div>
       <div className="lotesyinfo">
+        <div className="planouno">
+          <img src={Plano} alt="Plano de la subdivisión" />
+        </div>
         <div className="tablatodo">
-          {/* Tabla de selección de lotes */}
           <div className="seleccion-lote">
             <h1>Choose the lot you want</h1>
-            <select onChange={handleLoteChange}>
-              <option value="">Selecciona </option>
+            <select
+              onChange={handleLoteChange}
+              value={loteSeleccionado ? loteSeleccionado.id : ""}
+            >
+              <option value="">Selecciona</option>
               {lotes.map((lote) => (
-                <option key={lote.id} value={lote.id}>
+                <option
+                  key={lote.id}
+                  value={lote.id}
+                  disabled={lotesApartados.includes(lote.id)}
+                >
                   Lote {lote.id}
                 </option>
               ))}
             </select>
           </div>
-          {/* Mostrar información del lote seleccionado */}
+
+          {mensaje && <div className="mensaje">{mensaje}</div>}
+
           {loteSeleccionado && (
             <div className="info-lote">
               <h3>Lot Details {loteSeleccionado.id}</h3>
               <p>Measurements: {loteSeleccionado.Measurements}</p>
             </div>
           )}
-        </div>
-        <div className="planouno">
-          <img src={Plano} alt="planoimg" />
+
+          <div className="formulario-cliente">
+            <input
+              type="text"
+              name="nombre"
+              placeholder="Nombre Completo"
+              value={clienteInfo.nombre}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="telefono"
+              placeholder="Teléfono"
+              value={clienteInfo.telefono}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="direccion"
+              placeholder="Dirección Actual"
+              value={clienteInfo.direccion}
+              onChange={handleChange}
+            />
+            <button onClick={apartarLote}>Apartar Lote</button>
+          </div>
+
+          <div className="lotes-apartados">
+            <h2>Lotes Apartados:</h2>
+            {lotesApartados.length > 0 ? (
+              <ul>
+                {lotesApartados.map((id) => (
+                  <li key={id}>
+                    Lote {id}
+                    <button onClick={() => quitarApartado(id)}>Liberar</button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay lotes apartados.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>
