@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from "react";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  onSnapshot,
+  query,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
+import { db } from "../firebaseConfig";
 import "../subdivision.css";
 import Plano from "../imagenes/distribucionplanonuevo.jpg";
 
@@ -12,112 +22,29 @@ function Subdivision() {
   });
   const [mensaje, setMensaje] = useState("");
 
-  // Cargar lotes apartados del Local Storage SOLO al cargar la página
+  // Obtener lotes apartados en tiempo real
   useEffect(() => {
-    const lotesGuardados = localStorage.getItem("lotesApartados");
-    console.log("Lotes cargados del Local Storage:", lotesGuardados);
+    const q = query(collection(db, "lotesApartados"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const lotes = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log("Lotes obtenidos:", lotes); // Debug para revisar datos
+      setLotesApartados(lotes || []);
+    });
 
-    if (lotesGuardados) {
-      try {
-        const parsedLotes = JSON.parse(lotesGuardados);
-        if (Array.isArray(parsedLotes)) {
-          setLotesApartados(parsedLotes);
-        } else {
-          console.warn(
-            "Los lotes guardados no son un array válido:",
-            parsedLotes
-          );
-        }
-      } catch (error) {
-        console.error("Error al parsear Local Storage:", error);
-      }
-    }
+    return () => unsubscribe(); // Desuscribirse al desmontar el componente
   }, []);
-
-  // Guardar en Local Storage cada vez que cambian los lotes apartados
-  useEffect(() => {
-    if (lotesApartados.length > 0) {
-      localStorage.setItem("lotesApartados", JSON.stringify(lotesApartados));
-      console.log("Lotes guardados en Local Storage:", lotesApartados);
-    } else {
-      console.log("No se guardó en Local Storage porque el array está vacío.");
-    }
-  }, [lotesApartados]);
-
-  // Información de los lotes
-  const lotes = [
-    { id: 1, Measurements: "10m x 12m 2,025m2" },
-    { id: 2, Measurements: "12m x 15m 2,025m2" },
-    { id: 3, Measurements: "8m x 10m 2,025m2" },
-    { id: 4, Measurements: "14m x 16m 2,025m2" },
-    { id: 5, Measurements: "11m x 12m 2,025m2" },
-    { id: 6, Measurements: "13m x 10m 2,025m2" },
-    { id: 7, Measurements: "9m x 14m 2,025m2" },
-    { id: 8, Measurements: "15m x 10m 2,025m2" },
-    { id: 9, Measurements: "12m x 12m 2,025m2" },
-    { id: 10, Measurements: "10m x 10m 2,025m2" },
-    { id: 11, Measurements: "10m x 12m 2,025m2" },
-    { id: 12, Measurements: "12m x 15m 2,025m2" },
-    { id: 13, Measurements: "8m x 10m 2,025m2" },
-    { id: 14, Measurements: "14m x 16m 2,025m2" },
-    { id: 15, Measurements: "11m x 12m 2,025m2" },
-    { id: 16, Measurements: "13m x 10m 2,025m2" },
-    { id: 17, Measurements: "9m x 14m 2,025m2" },
-    { id: 18, Measurements: "15m x 10m 2,025m2" },
-    { id: 19, Measurements: "12m x 12m 2,025m2" },
-    { id: 21, Measurements: "12m x 15m 2,025m2" },
-    { id: 22, Measurements: "8m x 10m 2,025m2" },
-    { id: 23, Measurements: "14m x 16m 2,025m2" },
-    { id: 24, Measurements: "11m x 12m 2,025m2" },
-    { id: 25, Measurements: "13m x 10m 2,025m2" },
-    { id: 26, Measurements: "9m x 14m 2,025m2" },
-    { id: 27, Measurements: "15m x 10m 2,025m2" },
-    { id: 28, Measurements: "12m x 12m 2,025m2" },
-    { id: 30, Measurements: "12m x 15m 2,025m2" },
-    { id: 31, Measurements: "8m x 10m 2,025m2" },
-    { id: 32, Measurements: "14m x 16 2,025m2m" },
-    { id: 33, Measurements: "11m x 12m 2,025m2" },
-    { id: 34, Measurements: "13m x 10m 2,025m2" },
-    { id: 35, Measurements: "9m x 14m 2,025m2" },
-    { id: 36, Measurements: "15m x 10m 2,025m2" },
-    { id: 37, Measurements: "12m x 12m 2,025m2" },
-    { id: 39, Measurements: "12m x 15m 2,025m2" },
-    { id: 40, Measurements: "8m x 10m 2,025m2" },
-    { id: 41, Measurements: "14m x 16m 2,025m2" },
-    { id: 42, Measurements: "11m x 12m 2,025m2" },
-    { id: 43, Measurements: "13m x 10m 2,025m2" },
-    { id: 44, Measurements: "9m x 14m 2,025m2" },
-    { id: 45, Measurements: "15m x 10m 2,025m2" },
-    { id: 46, Measurements: "12m x 12m 2,025m2" },
-    { id: 48, Measurements: "12m x 15m 2,025m2" },
-    { id: 49, Measurements: "8m x 10m 2,025m2" },
-    { id: 50, Measurements: "14m x 16m 2,025m2" },
-    { id: 51, Measurements: "11m x 12m 2,025m2" },
-    { id: 52, Measurements: "13m x 10m 2,025m2" },
-    { id: 53, Measurements: "9m x 14m 2,025m2" },
-    { id: 54, Measurements: "15m x 10m 2,025m2" },
-    { id: 55, Measurements: "12m x 12m 2,025m2" },
-    { id: 56, Measurements: "10m x 10m 2,025m2" },
-    { id: 58, Measurements: "12m x 15m 2,025m2" },
-    { id: 59, Measurements: "8m x 10m 2,025m2" },
-    { id: 60, Measurements: "14m x 16m 2,025m2" },
-    { id: 61, Measurements: "11m x 12m 2,025m2" },
-    { id: 62, Measurements: "13m x 10m 2,025m2" },
-    { id: 63, Measurements: "9m x 14m 2,025m2" },
-    { id: 64, Measurements: "15m x 10m 2,025m2" },
-    { id: 65, Measurements: "12m x 12m 2,025m2" },
-    { id: 66, Measurements: "10m x 10m 2,025m2" },
-  ];
 
   // Manejar la selección del lote
   const handleLoteChange = (event) => {
     const loteId = parseInt(event.target.value);
-    if (lotesApartados.includes(loteId)) {
+    if (lotesApartados.some((lote) => lote.loteId === loteId)) {
       setMensaje("Este lote ya está apartado, elige otro.");
       setLoteSeleccionado(null);
     } else {
-      const lote = lotes.find((l) => l.id === loteId);
-      setLoteSeleccionado(lote);
+      setLoteSeleccionado(loteId);
       setMensaje("");
     }
   };
@@ -131,8 +58,8 @@ function Subdivision() {
     });
   };
 
-  // ** Apartar el lote y guardar en Local Storage **
-  const apartarLote = () => {
+  // ** Apartar el lote y guardar en Firestore **
+  const apartarLote = async () => {
     if (!loteSeleccionado) {
       setMensaje("Por favor, selecciona un lote.");
       return;
@@ -146,34 +73,33 @@ function Subdivision() {
       return;
     }
 
-    // Verificar si el lote ya está apartado
-    if (lotesApartados.includes(loteSeleccionado.id)) {
-      setMensaje("Este lote ya está apartado. Elige otro.");
-      return;
+    try {
+      await addDoc(collection(db, "lotesApartados"), {
+        loteId: loteSeleccionado,
+        clienteInfo,
+      });
+      setMensaje(`Lote ${loteSeleccionado} apartado con éxito.`);
+      setLoteSeleccionado(null);
+      setClienteInfo({ nombre: "", telefono: "", direccion: "" });
+    } catch (error) {
+      console.error("Error al apartar el lote:", error);
+      setMensaje("Hubo un problema al apartar el lote.");
     }
-
-    // Apartar el lote
-    const nuevosLotes = [...lotesApartados, loteSeleccionado.id];
-    setLotesApartados(nuevosLotes);
-    setMensaje(`Lote ${loteSeleccionado.id} apartado con éxito.`);
-    setLoteSeleccionado(null);
-    setClienteInfo({ nombre: "", telefono: "", direccion: "" });
   };
 
   // ** Función para quitar un apartado con contraseña **
-  const quitarApartado = (loteId) => {
+  const quitarApartado = async (id) => {
     const contraseña = prompt(
       "Introduce la contraseña para quitar el apartado:"
     );
     if (contraseña === "1234") {
-      setLotesApartados((prevLotes) => {
-        const nuevosLotes = prevLotes.filter((id) => id !== loteId);
-        console.log("Lotes actualizados después de quitar:", nuevosLotes);
-        // Guardar en Local Storage al eliminar un lote
-        localStorage.setItem("lotesApartados", JSON.stringify(nuevosLotes));
-        return nuevosLotes;
-      });
-      setMensaje(`Lote ${loteId} liberado con éxito.`);
+      try {
+        await deleteDoc(doc(db, "lotesApartados", id));
+        setMensaje(`Lote liberado con éxito.`);
+      } catch (error) {
+        console.error("Error al liberar el lote:", error);
+        setMensaje("Hubo un problema al liberar el lote.");
+      }
     } else {
       alert("Contraseña incorrecta. No se quitó el apartado.");
     }
@@ -191,31 +117,23 @@ function Subdivision() {
         <div className="tablatodo">
           <div className="seleccion-lote">
             <h1>Choose the lot you want</h1>
-            <select
-              onChange={handleLoteChange}
-              value={loteSeleccionado ? loteSeleccionado.id : ""}
-            >
+            <select onChange={handleLoteChange} value={loteSeleccionado || ""}>
               <option value="">Selecciona</option>
-              {lotes.map((lote) => (
+              {[...Array(66)].map((_, index) => (
                 <option
-                  key={lote.id}
-                  value={lote.id}
-                  disabled={lotesApartados.includes(lote.id)}
+                  key={index + 1}
+                  value={index + 1}
+                  disabled={lotesApartados.some(
+                    (lote) => lote.loteId === index + 1
+                  )}
                 >
-                  Lote {lote.id}
+                  Lote {index + 1}
                 </option>
               ))}
             </select>
           </div>
 
           {mensaje && <div className="mensaje">{mensaje}</div>}
-
-          {loteSeleccionado && (
-            <div className="info-lote">
-              <h3>Lot Details {loteSeleccionado.id}</h3>
-              <p>Measurements: {loteSeleccionado.Measurements}</p>
-            </div>
-          )}
 
           <div className="formulario-cliente">
             <input
@@ -246,10 +164,13 @@ function Subdivision() {
             <h2>Lotes Apartados:</h2>
             {lotesApartados.length > 0 ? (
               <ul>
-                {lotesApartados.map((id) => (
-                  <li key={id}>
-                    Lote {id}
-                    <button onClick={() => quitarApartado(id)}>Liberar</button>
+                {lotesApartados.map((lote) => (
+                  <li key={lote.id}>
+                    Lote {lote.loteId} -{" "}
+                    {lote.clienteInfo?.nombre || "No disponible"}
+                    <button onClick={() => quitarApartado(lote.id)}>
+                      Liberar
+                    </button>
                   </li>
                 ))}
               </ul>

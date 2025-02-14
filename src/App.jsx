@@ -1,14 +1,39 @@
-import { useState } from "react";
+// src/App.jsx
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 import logo from "./imagenes/logo.png";
 import Slider from "./componentes/slider";
-import Subdivision from "./componentes/subdivision"; // Importar el componente
+import Subdivision from "./componentes/subdivision";
 import Location from "./componentes/location";
 import Contact from "./componentes/contacto";
 
+// Firebase Firestore
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig.js";
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [datos, setDatos] = useState([]);
+
+  useEffect(() => {
+    const obtenerDatos = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "nombre_de_la_coleccion")
+        );
+        const datosFirestore = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setDatos(datosFirestore);
+      } catch (error) {
+        console.error("Error al obtener documentos: ", error);
+      }
+    };
+
+    obtenerDatos();
+  }, []);
 
   return (
     <Router>
@@ -32,7 +57,6 @@ function App() {
             <Link to="/subdivision" className="button">
               Subdivision
             </Link>
-
             <Link to="/contact" className="button">
               Contact
             </Link>
@@ -60,7 +84,6 @@ function App() {
             >
               Subdivision
             </Link>
-
             <Link
               to="/contact"
               className="button"
@@ -79,13 +102,20 @@ function App() {
                 <div className="piso-dos">
                   <Slider />
                 </div>
+                <div className="firebase-data">
+                  <h2>Datos desde Firebase:</h2>
+                  <ul>
+                    {datos.map((item) => (
+                      <li key={item.id}>{JSON.stringify(item)}</li>
+                    ))}
+                  </ul>
+                </div>
               </>
             }
           />
           <Route path="/subdivision" element={<Subdivision />} />
           <Route path="/location" element={<Location />} />
           <Route path="/contact" element={<Contact />} />
-          {/* Puedes agregar más rutas aquí */}
         </Routes>
       </div>
     </Router>
