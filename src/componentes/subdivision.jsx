@@ -58,7 +58,7 @@ function Subdivision() {
     });
   };
 
-  // ** Apartar el lote y guardar en Firestore **
+  // Función para apartar el lote y guardar en Firestore
   const apartarLote = async () => {
     if (!loteSeleccionado) {
       setMensaje("Por favor, selecciona un lote.");
@@ -74,10 +74,11 @@ function Subdivision() {
     }
 
     try {
-      await addDoc(collection(db, "lotesApartados"), {
+      const docRef = await addDoc(collection(db, "lotesApartados"), {
         loteId: loteSeleccionado,
         clienteInfo,
       });
+      console.log("Documento escrito con ID: ", docRef.id); // <-- Agrega este console.log
       setMensaje(`Lote ${loteSeleccionado} apartado con éxito.`);
       setLoteSeleccionado(null);
       setClienteInfo({ nombre: "", telefono: "", direccion: "" });
@@ -86,7 +87,6 @@ function Subdivision() {
       setMensaje("Hubo un problema al apartar el lote.");
     }
   };
-
   // ** Función para quitar un apartado con contraseña **
   const quitarApartado = async (id) => {
     const contraseña = prompt(
