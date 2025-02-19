@@ -20,7 +20,7 @@ function Contact() {
   };
 
   // Número de teléfono y WhatsApp
-  const phoneNumber = "636-699-1839 "; // Reemplaza con tu número real
+  const phoneNumber = "6366991839 "; // Reemplaza con tu número real
 
   return (
     <div className="todo">
