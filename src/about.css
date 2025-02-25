@@ -1,0 +1,135 @@
+.seguridad {
+    display: flex;
+    justify-content: space-between;
+   
+}
+.imagenseguridad img {
+    width: 130%;
+}
+.imagenseguridad {
+    margin-top: 5%;
+    margin-left: 10%;
+    width: 30%;
+}
+
+.textoseguridad {
+    font-size: 180%;
+    width: 30%;
+    margin-top: 12%;
+    margin-right: 10%;
+}
+
+               /* intalciones */
+.instalaciones {
+    display: flex;
+    justify-content: space-between;
+}
+
+.textoinstalaciones {
+    font-size: 180%;
+    width: 30%;
+    margin-top: 5%;
+    margin-left: 13%;
+}
+.imageninstalaciones {
+ text-align: right;
+ width: 30%;
+ margin-right: 20%;
+ 
+}
+.imageninstalaciones img {
+    width: 130%;
+}
+
+/* calles y banquetas */
+.calles-glorietas-banquetas {
+    display: flex;
+    justify-content: space-between;
+}
+.imagencalles {
+    
+    margin-left: 10%;
+    width: 30%;
+}
+.imagencalles img {
+    width: 130%;
+}
+.textocalles {
+    font-size: 180%;
+    width: 30%;
+    margin-top: 5%;
+    margin-right: 10%;
+}
+
+/* CORREDOR Y BARDA PERIMETRAL */
+.corredorybarda {
+    display: flex;
+    justify-content: space-between;
+}
+.textocorredor {
+    font-size: 180%;
+    width: 30%;
+    margin-top: 5%;
+    margin-left: 13%;
+}
+.imagencorredor {
+    text-align: right;
+    width: 30%;
+    margin-right: 20%;
+    
+   }
+   .imagencorredor img {
+    width: 130%;
+}
+/* Estilos responsivos para dispositivos móviles (vertical y horizontal) */
+@media only screen and (max-width: 768px),
+       only screen and (max-height: 768px) and (orientation: landscape) {
+
+  /* Convertir a columna todos los contenedores para que se muestren de arriba hacia abajo */
+  .seguridad,
+  .instalaciones,
+  .calles-glorietas-banquetas,
+  .corredorybarda {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ajuste de ancho y márgenes para imágenes y textos */
+  .imagenseguridad,
+  .imageninstalaciones,
+  .imagencalles,
+  .imagencorredor,
+  .textoseguridad,
+  .textoinstalaciones,
+  .textocalles,
+  .textocorredor {
+    width: 90%;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  /* Aseguramos que las imágenes se adapten correctamente */
+  .imagenseguridad img,
+  .imageninstalaciones img,
+  .imagencalles img,
+  .imagencorredor img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Para contenedores donde el orden en el markup es texto > imagen, se invierte el orden */
+  .instalaciones {
+    flex-direction: column;
+  }
+  .instalaciones .imageninstalaciones {
+    order: -1;
+  }
+
+  .corredorybarda {
+    flex-direction: column;
+  }
+  .corredorybarda .imagencorredor {
+    order: -1;
+  }
+}

@@ -7,6 +7,7 @@ import Slider from "./componentes/slider";
 import Subdivision from "./componentes/subdivision";
 import Location from "./componentes/location";
 import Contact from "./componentes/contacto";
+import About from "./componentes/about.jsx";
 
 // Firebase Firestore
 import { collection, getDocs } from "firebase/firestore";
@@ -60,6 +61,9 @@ function App() {
             <Link to="/contact" className="button">
               Contact
             </Link>
+            <Link to="/about" className="button">
+              About
+            </Link>
           </div>
 
           <button className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
@@ -91,6 +95,13 @@ function App() {
             >
               Contact
             </Link>
+            <Link
+              to="/about"
+              className="button"
+              onClick={() => setMenuOpen(false)}
+            >
+              About
+            </Link>
           </div>
         </div>
 
@@ -116,6 +127,7 @@ function App() {
           <Route path="/subdivision" element={<Subdivision />} />
           <Route path="/location" element={<Location />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>
