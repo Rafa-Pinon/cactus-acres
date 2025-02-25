@@ -1,116 +1,193 @@
-body {
-  /* display: flex; */
+/* Estilos generales */
+.todo {
   background-color: burlywood;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
+
+/* Contenedor del formulario */
 .contact-container {
-    max-width: 500px;
-    margin: 50px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  width: 90%;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Títulos */
+h2 {
+  color: #333;
+  font-size: 24px;
+}
+
+/* Información de contacto */
+.contact-info {
+  margin-bottom: 15px;
+}
+
+.contact-info p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.contact-info a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* Botón de WhatsApp */
+.whatsapp-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  color: white;
+  padding: 12px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: 0.3s;
+  margin: 15px auto;
+  width: 90%;
+  max-width: 250px;
+}
+
+.whatsapp-button:hover {
+  background: #1ebe5d;
+}
+
+/* Formulario de contacto */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group {
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.input-group textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Botón de enviar */
+.submit-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+.submit-btn:hover {
+  background: #0056b3;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* Para móviles en modo vertical */
+@media screen and (max-width: 480px) {
+  .contact-container {
+    width: 95%;
+    padding: 15px;
   }
-  
+
   h2 {
-    color: #333;
+    font-size: 20px;
   }
-  
-  .contact-info {
-    margin-bottom: 15px;
-  }
-  
+
   .contact-info p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-size: 16px;
-    color: #333;
+    font-size: 14px;
   }
-  
-  .contact-info a {
-    text-decoration: none;
-    color: #007bff;
-  }
-  
-  .contact-info a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Botón de WhatsApp */
+
   .whatsapp-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: #25D366;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-    transition: 0.3s;
+    font-size: 16px;
+    padding: 10px;
+    max-width: 200px;
   }
-  
-  .whatsapp-button:hover {
-    background: #1ebe5d;
-  }
-  
-  /* Formulario de contacto */
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
+
   .input-group input,
   .input-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: 0.3s;
+    font-size: 14px;
+    padding: 8px;
   }
-  
-  .input-group input:focus,
-  .input-group textarea:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  }
-  
-  .input-group textarea {
-    resize: none;
-    height: 100px;
-  }
-  
-  /* Botón de enviar */
+
   .submit-btn {
-    background: #007bff;
-    color: white;
-    border: none;
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
+/* Para móviles en modo horizontal y tablets */
+@media screen and (max-width: 768px) {
+  .contact-container {
+    width: 85%;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  .contact-info p {
+    font-size: 15px;
+  }
+
+  .whatsapp-button {
+    font-size: 17px;
     padding: 12px;
-    font-size: 18px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
   }
-  
-  .submit-btn:hover {
-    background: #0056b3;
+
+  .submit-btn {
+    font-size: 17px;
+    padding: 12px;
   }
-  
+}

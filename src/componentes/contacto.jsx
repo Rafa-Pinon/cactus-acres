@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { FaWhatsapp, FaEnvelope, FaPhone } from "react-icons/fa"; // Importamos iconos
+import { FaWhatsapp, FaEnvelope, FaPhone } from "react-icons/fa";
 import "../contact.css";
 
 function Contact() {
+  const phoneNumber = "6366991839"; // Definir phoneNumber antes de usarlo
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,18 +18,19 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Formulario enviado:", formData);
-  };
+    const { name, email, phone, message } = formData;
 
-  // Número de teléfono y WhatsApp
-  const phoneNumber = "6366991839 "; // Reemplaza con tu número real
+    const whatsappMessage = `Hola, mi nombre es ${name}.%0AEmail: ${email}%0ATeléfono: ${phone}%0AMensaje: ${message}`;
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
+
+    window.open(whatsappURL, "_blank");
+  };
 
   return (
     <div className="todo">
       <div className="contact-container">
         <h2>Contact Us</h2>
 
-        {/* Información de contacto */}
         <div className="contact-info">
           <p>
             <FaPhone /> <strong>Phone:</strong>{" "}
@@ -35,14 +38,13 @@ function Contact() {
           </p>
           <p>
             <FaEnvelope /> <strong>Email:</strong>
-            <a href="rafapinongonzalez@live.com.mx">
+            <a href="mailto:rafapinongonzalez@live.com.mx">
               {" "}
               rafapinongonzalez@live.com.mx
             </a>
           </p>
         </div>
 
-        {/* Botón de WhatsApp */}
         <a
           href={`https://wa.me/${phoneNumber}`}
           className="whatsapp-button"
@@ -52,7 +54,6 @@ function Contact() {
           <FaWhatsapp /> Chat on WhatsApp
         </a>
 
-        {/* Formulario de contacto */}
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="input-group">
             <label>Name</label>
