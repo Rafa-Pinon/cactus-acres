@@ -1,9 +1,13 @@
 /* Estilos generales para la sección */
+
 .todo-lotes {
   background-color: burlywood;
   font-family: Arial, sans-serif;
-  margin: 20px;
   padding: 20px;
+  width: 100%;
+  min-height: 100vh; /* Se ajusta a la altura de la pantalla automáticamente */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Estilos para los títulos */
