@@ -40,7 +40,7 @@ function Contact() {
             <FaEnvelope /> <strong>Email:</strong>
             <a href="mailto:rafapinongonzalez@live.com.mx">
               {" "}
-              rafapinongonzalez@live.com.mx
+              josiahlebaron@yahoo.com
             </a>
           </p>
         </div>

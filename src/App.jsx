@@ -112,14 +112,13 @@ function App() {
               <>
                 <div className="piso-dos">
                   <Slider />
-                </div>
-                <div className="firebase-data">
-                  <h2>Datos desde Firebase:</h2>
-                  <ul>
-                    {datos.map((item) => (
-                      <li key={item.id}>{JSON.stringify(item)}</li>
-                    ))}
-                  </ul>
+                  <div className="firebase-data">
+                    <ul>
+                      {datos.map((item) => (
+                        <li key={item.id}>{JSON.stringify(item)}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </>
             }

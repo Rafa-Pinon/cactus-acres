@@ -14,10 +14,8 @@ function About() {
         </div>
         <div className="textoseguridad">
           <p>
-            This residential community is designed to ensure the safety and
-            well-being of your family. It features a gated entrance with
-            security personnel, giving you full control over who enters, as only
-            those you authorize will be allowed access.
+            This is a gated residential community, designed for security and
+            privacy. It features a gated entrance limiting traffice flow
           </p>
         </div>
       </div>
@@ -27,12 +25,12 @@ function About() {
           <p>
             Our electrical installations are completely underground, providing
             not only a more beautiful environment but also greater safety and
-            protection for your family. Additionally, the water supply is
-            guaranteed thanks to high-quality piping and a storage system
-            designed to meet all your needs. Here, comfort and peace of mind are
-            assured. This is the perfect place to build the home of your dreams!
-            Don’t miss the opportunity to invest in a lot that offers security,
-            quality, and well-being.
+            protection for your family. Additionally we have a private well so
+            the water supply is guaranteed thanks to high-quality piping and a
+            storage system designed to meet all your needs. Here, comfort and
+            peace of mind are assured. This is the perfect place to build the
+            home of your dreams! Don’t miss the opportunity to invest in a lot
+            that offers security, quality, and well-being.
           </p>
         </div>
         <div className="imageninstalaciones">
@@ -49,17 +47,17 @@ function About() {
             efficient traffic flow. The main street is designed as a boulevard,
             with lanes divided by central lines to improve traffic organization.
             Additionally, sidewalks on the sides of both main and secondary
-            streets, along with improved pathways, provide comfortable and safe
-            mobility for everyone.
+            streets, provide comfortable and safe mobility for everyone.
           </p>
         </div>
       </div>
       <div className="corredorybarda">
         <div className="textocorredor">
           <p>
-            We have a pathway around the neighborhood, perfect for outdoor
-            exercise. Additionally, our perimeter wall enhances the beauty of
-            the area while providing extra security for the community.
+            We have a pathway or running trail around the neighborhood, perfect
+            for outdoor excercising or a peaceful walk. astetic perimeter wall
+            enhances the beaty of the area while providing security and privacy
+            for the community.
           </p>
         </div>
         <div className="imagencorredor">

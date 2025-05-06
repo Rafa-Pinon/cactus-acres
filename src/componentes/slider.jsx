@@ -19,8 +19,8 @@ const images = [
 ];
 
 const texts = [
-  "Your future begins with a great investment. Secure the perfect land today.",
-  "Build your dreams from the ground up. Claim your ideal property now.",
+  "Your future begins with a great investment. Secure the perfect lot today.",
+  "Build your dreams from the ground up. Claim your ideal location now.",
   "The best investment is in land because its value only grows. Secure your legacy today.",
 ];
 

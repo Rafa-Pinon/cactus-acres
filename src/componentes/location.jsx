@@ -5,7 +5,14 @@ function Location() {
   return (
     <div className="location-container">
       <header className="location-header">
-        <h1>Discover Our Prime Location</h1>
+        <h2>
+          Private gated community Security and tranquility for you family or
+          vacation home Modern and funcitional design Title property ready for
+          ownership title transfer Spacious lots ready for construction Water
+          and power to each lot. Private well, excess water available Power
+          ready to hook up with Commision. Contracts approved. Under ground
+          power with double meter for each lot. No overhead powerlines
+        </h2>
         <p>Find the perfect place for your dream home.</p>
       </header>
 

@@ -1,3 +1,6 @@
+.informacion-de-proyecto {
+  background-color: burlywood;
+}
 .seguridad {
     display: flex;
     justify-content: space-between;
@@ -86,6 +89,9 @@
        only screen and (max-height: 768px) and (orientation: landscape) {
 
   /* Convertir a columna todos los contenedores para que se muestren de arriba hacia abajo */
+  .informacion-de-proyecto {
+    margin-top: 5%;
+  }
   .seguridad,
   .instalaciones,
   .calles-glorietas-banquetas,

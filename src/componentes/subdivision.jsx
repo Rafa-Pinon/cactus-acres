@@ -13,6 +13,10 @@ import "../subdivision.css";
 import Plano from "../imagenes/distribucionplanonuevo.jpg";
 
 function Subdivision() {
+  const [adminAccess, setAdminAccess] = useState(false);
+  const [adminVisible, setAdminVisible] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [clientesRegistrados, setClientesRegistrados] = useState([]);
   const [loteSeleccionado, setLoteSeleccionado] = useState(null);
   const [lotesApartados, setLotesApartados] = useState([]);
   const [clienteInfo, setClienteInfo] = useState({
@@ -30,14 +34,13 @@ function Subdivision() {
         id: doc.id,
         ...doc.data(),
       }));
-      console.log("Lotes obtenidos:", lotes); // Debug para revisar datos
       setLotesApartados(lotes || []);
+      setClientesRegistrados(lotes); // usamos los mismos datos para admin
     });
 
     return () => unsubscribe(); // Desuscribirse al desmontar el componente
   }, []);
 
-  // Manejar la selección del lote
   const handleLoteChange = (event) => {
     const loteId = parseInt(event.target.value);
     if (lotesApartados.some((lote) => lote.loteId === loteId)) {
@@ -49,7 +52,6 @@ function Subdivision() {
     }
   };
 
-  // Manejar el formulario de cliente
   const handleChange = (e) => {
     const { name, value } = e.target;
     setClienteInfo({
@@ -58,7 +60,6 @@ function Subdivision() {
     });
   };
 
-  // Función para apartar el lote y guardar en Firestore
   const apartarLote = async () => {
     if (!loteSeleccionado) {
       setMensaje("Por favor, selecciona un lote.");
@@ -74,11 +75,10 @@ function Subdivision() {
     }
 
     try {
-      const docRef = await addDoc(collection(db, "lotesApartados"), {
+      await addDoc(collection(db, "lotesApartados"), {
         loteId: loteSeleccionado,
-        clienteInfo,
+        ...clienteInfo,
       });
-      console.log("Documento escrito con ID: ", docRef.id); // <-- Agrega este console.log
       setMensaje(`Lote ${loteSeleccionado} apartado con éxito.`);
       setLoteSeleccionado(null);
       setClienteInfo({ nombre: "", telefono: "", direccion: "" });
@@ -87,12 +87,12 @@ function Subdivision() {
       setMensaje("Hubo un problema al apartar el lote.");
     }
   };
-  // ** Función para quitar un apartado con contraseña **
+
   const quitarApartado = async (id) => {
     const contraseña = prompt(
       "Introduce la contraseña para quitar el apartado:"
     );
-    if (contraseña === "1234") {
+    if (contraseña === "admin12345") {
       try {
         await deleteDoc(doc(db, "lotesApartados", id));
         setMensaje(`Lote liberado con éxito.`);
@@ -107,9 +107,54 @@ function Subdivision() {
 
   return (
     <div className="todo-lotes">
-      <div className="h1">
-        <h1>Choose the place where your dreams come to life</h1>
+      <div className="contenedoradminyh1">
+        <div className="botonadimn">
+          <button className="admin-btn" onClick={() => setAdminVisible(true)}>
+            Admin
+          </button>
+        </div>
+
+        {adminVisible && (
+          <div className="modal">
+            <div className="modal-content">
+              <h2>Contraseña Administrador</h2>
+              <input
+                type="password"
+                placeholder="Ingresa la contraseña"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+              />
+              <div className="modal-buttons">
+                <button
+                  className="confirm-btn"
+                  onClick={() => {
+                    if (passwordInput === "admin12345") {
+                      setAdminAccess(true); // ✅ activa vista de admin
+                      setAdminVisible(false); // ✅ cierra el modal
+                      setPasswordInput("");
+                      setMensaje("Modo administrador activado.");
+                    } else {
+                      alert("Contraseña incorrecta");
+                    }
+                  }}
+                >
+                  Confirmar
+                </button>
+                <button
+                  className="cancel-btn"
+                  onClick={() => setAdminVisible(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="h1">
+          <h1>Choose the place where your dreams come to life</h1>
+        </div>
       </div>
+
       <div className="lotesyinfo">
         <div className="planouno">
           <img src={Plano} alt="Plano de la subdivisión" />
@@ -167,7 +212,6 @@ function Subdivision() {
                 {lotesApartados.map((lote) => (
                   <li key={lote.id}>
                     Lote {lote.loteId} -{" "}
-                    {lote.clienteInfo?.nombre || "No disponible"}
                     <button onClick={() => quitarApartado(lote.id)}>
                       Liberar
                     </button>
@@ -178,6 +222,22 @@ function Subdivision() {
               <p>No hay lotes apartados.</p>
             )}
           </div>
+
+          {adminAccess && (
+            <div className="info-admin">
+              <h2>Información de Clientes Registrados:</h2>
+              <ul>
+                {clientesRegistrados.map((cliente) => (
+                  <li key={cliente.id}>
+                    <strong>Lote:</strong> {cliente.loteId} |{" "}
+                    <strong>Nombre:</strong> {cliente.nombre} |{" "}
+                    <strong>Teléfono:</strong> {cliente.telefono} |{" "}
+                    <strong>Dirección:</strong> {cliente.direccion}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
