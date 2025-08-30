@@ -1,13 +1,14 @@
 .todoslider {
+  /* height: 1000px; */
+  width: 100%;   /* ocupa todo el ancho */
+  height: 100vh; /* ocupa toda la altura de la ventana */
   background-color: burlywood;
-
   bottom: 0;
   left: 0;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .slider-container {
-  width: 90%;
   max-width: 65%;
   margin: auto;
   position: relative;
@@ -97,10 +98,15 @@
 
 @media (max-width: 768px) {
   .todoslider {
+    height: 650px;
     padding-top: 10%;
     padding-bottom: 40%;
   }
+  .thumbnails {
+    padding-top: 10%;
+  }
   .anuncios {
+    padding-top: 10%;
     font-size: 80%;
   }
   .prev {

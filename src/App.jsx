@@ -67,6 +67,7 @@ function App() {
           </div>
 
           <button className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+            {" "}
             ☰
           </button>
 

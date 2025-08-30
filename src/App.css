@@ -1,183 +1,224 @@
-body {
-  
+/* RESET */
+html, body, #root {
+  height: 100%;
   margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdfbf7;
+  color: #333;
+  box-sizing: border-box;
 }
 
+/* Contenedor principal */
+.cactus-acres {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* siempre al menos altura de la ventana */
+}
+
+/* Piso dos (contenido principal) */
+.piso-dos {
+  flex: 1; /* ocupa todo el espacio restante debajo del header */
+  display: flex;
+  flex-direction: column;
+}
+/* Slider */
+.piso-dos > .slider, /* si tu Slider tiene clase propia, reemplazar */
+.piso-dos {
+  flex: 1; /* asegura que el slider llene todo el espacio vertical disponible */
+  min-height: 100%; /* opcional: asegura que nunca quede vacío */
+}
+
+/* CABECERA */
 .cabeza {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: #ae7023;
-  flex-grow: 1;
+  padding: 10px 3%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(90deg, #8b5e34, #ae7023);
+  overflow-x: hidden; /* evita que los botones desborden horizontalmente */
 }
 
-.logo {
-  margin-left: 7%;
-}
 
 .logo img {
-  height: 250px;
+  height: 100px;
   max-width: 100%;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 .nombre {
-  color: aliceblue;
-  font-size: 180%;
-  font-weight: bold;
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
   text-align: center;
   flex-grow: 1;
-  margin: 0 auto;
-  /* padding-left: 20%; */
+  letter-spacing: 2px;
 }
 
+/* BOTONES */
 .button-container {
   display: flex;
+  flex-wrap: wrap;      /* permite que los botones bajen a otra línea */
+  gap: 10px;
   justify-content: flex-end;
-  align-items: center;
-  margin-right: 10%;
+  max-width: 100%;
+  overflow: hidden;     /* evita scroll horizontal */
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 10px 18px;
   font-size: 16px;
-  color: aliceblue;
+  font-weight: 500;
+  color: #fff;
   background-color: #d79d55;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  margin: 0 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .button:hover {
   background-color: goldenrod;
-  color: black;
+  color: #222;
+  transform: translateY(-2px);
 }
 
 .button:active {
-  background-color: #A67843;
+  background-color: #a67843;
+  transform: scale(0.95);
 }
 
+/* MENÚ HAMBURGUESA */
 .menu-icon {
   display: none;
+  font-size: 36px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  z-index: 1001;
 }
 
+/* MENÚ MÓVIL */
 .mobile-menu {
   display: none;
+  flex-direction: column;
+  background: #8b5e34;
+  position: fixed;
+  top: 90px;
+  right: 16px;
+  width: 180px;
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1000;
 }
 
+.mobile-menu .button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.mobile-menu .button:hover {
+  background-color: #d79d55;
+  color: #111;
+}
+
+.show-menu {
+  display: flex;
+}
+
+/* PISO DOS */
+.piso-dos {
+  position: relative;
+  z-index: 1;
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .cactus-acres {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .piso-dos {
-    margin-top: 0 !important;
-    padding-top: 0;
-  }
-
-  .cabeza {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    min-height: 30vh;
-    margin-bottom: -5%;
-    padding-bottom: 0;
-  }
-
   .nombre,
   .button-container {
-    display: none!important;
-  }
-
-  .logo {
-    margin: 0 auto;
-    
-  }
-
-  .logo img {
-    width:85%;
-  }
-
-  .menu-icon {
-    display: block;
-    font-size: 50px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    color: white;
-    position: absolute;
-    right: 30px;
-    margin-top: -50%;
-  }
-
-  .mobile-menu {
     display: none;
-    flex-direction: column;
-    background-color: #ae7023; 
-    position: absolute;
-     top: 60px;
-    right: 15px;
-    width: 100px;
-    text-align: center;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
   }
 
-  .mobile-menu .button {
+  
+ 
+/* MENÚ HAMBURGUESA */
+.menu-icon {
+  display: none;
+  font-size: 60px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  z-index: 1001;
+  
+}
+.menu-icon {
     display: block;
-    width: 100%;
-    padding: 15px;
-    background-color: #76460c;
-    border-bottom: 1px solid white;
   }
+/* Hover para indicar clic */
+.menu-icon:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+  color: #ffd700; /* dorado para llamar la atención */
+  
+}
 
-  .mobile-menu .button:last-child {
-    border-bottom: none;
-  }
-
-  .mobile-menu .button:hover {
-    background-color: rgb(145, 112, 29);
-  }
-
-  .show-menu {
-    display: flex;
+/* Efecto al hacer click */
+.menu-icon:active {
+  transform: scale(0.95);
+  background-color: rgba(255, 255, 255, 0.3);
+ 
+}
+  .logo img {
+    height: 90px;
   }
 }
-@media (max-width: 1024px) and (max-height: 480px) {
-  .cabeza {
-    display: flex;
-    justify-content: space-between; /* Alinea los elementos a los extremos */
-    align-items: center;
-    
+
+@media (max-width: 480px) {
+  .mobile-menu {
+    top: 72px;
   }
+
   .logo img {
-    width:100%;
-  }
-
-  .nombre {
-    display: none !important;
-  }
-
-  .button-container {
-    display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    gap: 0px;
-   padding-left: 50%;
+    height: 80px;
   }
 
   .button {
-    font-size: 15px;
-    padding: 8px 15px;
+    font-size: 14px;
+    padding: 6px 12px;
   }
-
-  .menu-icon {
-    font-size: 40px;
-    right: 20px;
-    margin-top: 0;
-  }
-
 }
