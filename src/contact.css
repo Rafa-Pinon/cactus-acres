@@ -1,6 +1,7 @@
 /* Estilos generales */
 .todo {
-  background-color: burlywood;
+  /* background-color: burlywood; */
+  background-color: #f4f0e8;
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;

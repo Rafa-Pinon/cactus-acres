@@ -1,47 +1,21 @@
 /* Contenedor principal */
 .location-container {
+     display: flex;
+     flex-direction: column;
     text-align: center;
-    padding-top: 5px;
-    background-color: burlywood;
-    width: 100%;
-    min-height: 100vh;
+    padding-top: 10px;
+    background-color: #f4f0e8;  
+    align-items: center;
+    gap: 20px;   
 }
-
-/* Encabezado */
-.location-header {
-    margin-bottom: 30px;
-}
-
-.location-header h1 {
-    font-size: 2rem;
-    color: #333;
-}
-
-.location-header p {
-    font-size: 1.2rem;
-    color: #666;
-}
-
-/* Contenido */
 .location-content {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    justify-content: space-between;
+     gap: 1000px;
 }
-
-/* Mapa */
-.location-map iframe {
-    width: 90%;
-    height: 400px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Información */
 .location-info {
     max-width: 600px;
+    margin-left: 5%;
     text-align: left;
     background: white;
     padding: 20px;
@@ -68,26 +42,61 @@
 }
 
 
-/* Responsivo */
-@media (min-width: 768px) {
-    .location-content {
-        flex-direction: row;
-        justify-content: center;
-        align-items: flex-start;
-    }
-
-    .location-map iframe {
-        width: 500px;
-        height: 350px;
-    }
-
-    .location-info {
-        max-width: 400px;
-    }
+/* Encabezado */
+.location-header {
+    margin-bottom: 30px;
 }
-/* @media (min-width: 1024px) {
-    .location-map iframe {
-        width: 400%;
-        height: 500px;
-    }
-} */
+
+.location-header h1 {
+    font-size: 2rem;
+    color: #333;
+}
+
+.location-header p {
+    font-size: 1.2rem;
+    color: #666;
+}
+.location-map iframe {
+     width: 500%;       /* ocupa todo el ancho del contenedor */
+  height: 500px;     /* controla el alto */
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .location-content {
+    flex-direction: column;  /* en móvil, los acomoda uno abajo del otro */
+    align-items: center;
+    gap: 20px;               /* espacio razonable entre mapa e info */
+  }
+
+  .location-map iframe {
+    width: 100%;    /* ocupa todo el ancho disponible */
+    height: 300px;  /* menos alto en pantallas chicas */
+  }
+
+  .location-info {
+    width: 90%;          /* que no se pegue a los bordes */
+    text-align: center;
+    
+    margin: 0 auto;      
+    font-size: 1rem;     /* texto un poco más pequeño */
+    padding: 15px;
+  }
+
+  .location-header h2 {
+    font-size: 1.2rem;   /* título más legible en móvil */
+    line-height: 1.4;
+  }
+
+  .location-header p {
+    font-size: 1rem;
+  }
+}
