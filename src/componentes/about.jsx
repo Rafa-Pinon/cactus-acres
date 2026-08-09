@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "../about.css";
-import Imagenseguridad from "../imagenes/entradanuevo.jpg";
+import Imagenseguridad from "../imagenes/nuevoentradapuertaabierta.jpg";
 import imageninstalacion from "../imagenes/nochelum.jpg";
-import bulrvardnuevo from "../imagenes/bulevardnuevo.jpg";
-import Corredornuevo from "../imagenes/corredornuevo.jpg";
+import bulrvardnuevo from "../imagenes/nuevocaminograva.jpg";
+import Corredornuevo from "../imagenes/nuevocorredor.jpg";
 
 function About() {
   return (

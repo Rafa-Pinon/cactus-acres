@@ -21,7 +21,7 @@ function App() {
     const obtenerDatos = async () => {
       try {
         const querySnapshot = await getDocs(
-          collection(db, "nombre_de_la_coleccion")
+          collection(db, "nombre_de_la_coleccion"),
         );
         const datosFirestore = querySnapshot.docs.map((doc) => ({
           id: doc.id,

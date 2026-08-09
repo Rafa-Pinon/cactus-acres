@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../slider.css";
 
 // Importa las imágenes desde la carpeta 'src/images'
-import imagen1 from "../imagenes/entradanuevo.jpg";
-import imagen2 from "../imagenes/corredornuevo.jpg";
-import imagen3 from "../imagenes/glorietanuevo.jpg";
-import imagen4 from "../imagenes/bulevardnuevo.jpg";
-import imagen5 from "../imagenes/nochelum.jpg";
-import imagen6 from "../imagenes/parquenuevo.jpg";
+import imagen1 from "../imagenes/nuevoentrada.jpg";
+import imagen2 from "../imagenes/nuevoentradapuertaabierta.jpg";
+import imagen3 from "../imagenes/nuevoparque.jpg";
+import imagen4 from "../imagenes/nuevoparquiedecerca.jpg";
+import imagen5 from "../imagenes/nuevocorredor.jpg";
+import imagen6 from "../imagenes/nuevocaminograva.jpg";
 
 const images = [
   { src: imagen1, alt: "Imagen 1" },
@@ -53,7 +53,7 @@ const Slider = () => {
 
   const prevSlide = () => {
     setCurrentImageIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length,
     );
   };
 
