@@ -1,246 +1,465 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  collection,
   addDoc,
-  getDocs,
+  collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   query,
-  doc,
-  deleteDoc,
 } from "firebase/firestore";
+
 import { db } from "../firebaseConfig";
 import "../subdivision.css";
+
 import Plano from "../imagenes/distribucionplanonuevo.jpg";
+
+const TOTAL_LOTES = 66;
 
 function Subdivision() {
   const [adminAccess, setAdminAccess] = useState(false);
   const [adminVisible, setAdminVisible] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
+
   const [clientesRegistrados, setClientesRegistrados] = useState([]);
-  const [loteSeleccionado, setLoteSeleccionado] = useState(null);
+  const [loteSeleccionado, setLoteSeleccionado] = useState("");
   const [lotesApartados, setLotesApartados] = useState([]);
+
   const [clienteInfo, setClienteInfo] = useState({
     nombre: "",
     telefono: "",
     direccion: "",
   });
-  const [mensaje, setMensaje] = useState("");
 
-  // Obtener lotes apartados en tiempo real
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState("");
+  const [enviando, setEnviando] = useState(false);
+
   useEffect(() => {
     const q = query(collection(db, "lotesApartados"));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const lotes = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setLotesApartados(lotes || []);
-      setClientesRegistrados(lotes); // usamos los mismos datos para admin
-    });
 
-    return () => unsubscribe(); // Desuscribirse al desmontar el componente
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const lotes = snapshot.docs.map((documento) => ({
+          id: documento.id,
+          ...documento.data(),
+        }));
+
+        setLotesApartados(lotes);
+        setClientesRegistrados(lotes);
+      },
+      (error) => {
+        console.error("Error al cargar los lotes:", error);
+        setMensaje("No fue posible cargar la disponibilidad.");
+        setTipoMensaje("error");
+      },
+    );
+
+    return () => unsubscribe();
   }, []);
 
+  const lotesApartadosIds = useMemo(
+    () => new Set(lotesApartados.map((lote) => Number(lote.loteId))),
+    [lotesApartados],
+  );
+
+  const lotesDisponibles = TOTAL_LOTES - lotesApartados.length;
+
   const handleLoteChange = (event) => {
-    const loteId = parseInt(event.target.value);
-    if (lotesApartados.some((lote) => lote.loteId === loteId)) {
-      setMensaje("Este lote ya está apartado, elige otro.");
-      setLoteSeleccionado(null);
-    } else {
-      setLoteSeleccionado(loteId);
+    const valor = event.target.value;
+
+    if (!valor) {
+      setLoteSeleccionado("");
       setMensaje("");
-    }
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setClienteInfo({
-      ...clienteInfo,
-      [name]: value,
-    });
-  };
-
-  const apartarLote = async () => {
-    if (!loteSeleccionado) {
-      setMensaje("Por favor, selecciona un lote.");
       return;
     }
+
+    const loteId = Number(valor);
+
+    if (lotesApartadosIds.has(loteId)) {
+      setMensaje("This lot is already reserved. Please choose another lot.");
+      setTipoMensaje("error");
+      setLoteSeleccionado("");
+      return;
+    }
+
+    setLoteSeleccionado(loteId);
+    setMensaje("");
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setClienteInfo((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const apartarLote = async (event) => {
+    event.preventDefault();
+
+    if (!loteSeleccionado) {
+      setMensaje("Please choose a lot.");
+      setTipoMensaje("error");
+      return;
+    }
+
     if (
-      !clienteInfo.nombre ||
-      !clienteInfo.telefono ||
-      !clienteInfo.direccion
+      !clienteInfo.nombre.trim() ||
+      !clienteInfo.telefono.trim() ||
+      !clienteInfo.direccion.trim()
     ) {
-      setMensaje("Por favor, llena todos los campos.");
+      setMensaje("Please complete all contact information.");
+      setTipoMensaje("error");
+      return;
+    }
+
+    if (lotesApartadosIds.has(Number(loteSeleccionado))) {
+      setMensaje("This lot has already been reserved.");
+      setTipoMensaje("error");
       return;
     }
 
     try {
+      setEnviando(true);
+
       await addDoc(collection(db, "lotesApartados"), {
-        loteId: loteSeleccionado,
-        ...clienteInfo,
+        loteId: Number(loteSeleccionado),
+        nombre: clienteInfo.nombre.trim(),
+        telefono: clienteInfo.telefono.trim(),
+        direccion: clienteInfo.direccion.trim(),
+        fechaRegistro: new Date().toISOString(),
       });
-      setMensaje(`Lote ${loteSeleccionado} apartado con éxito.`);
-      setLoteSeleccionado(null);
-      setClienteInfo({ nombre: "", telefono: "", direccion: "" });
+
+      setMensaje(`Lot ${loteSeleccionado} has been reserved successfully.`);
+      setTipoMensaje("success");
+
+      setLoteSeleccionado("");
+      setClienteInfo({
+        nombre: "",
+        telefono: "",
+        direccion: "",
+      });
     } catch (error) {
       console.error("Error al apartar el lote:", error);
-      setMensaje("Hubo un problema al apartar el lote.");
+
+      setMensaje("There was a problem reserving the lot. Please try again.");
+      setTipoMensaje("error");
+    } finally {
+      setEnviando(false);
     }
   };
 
-  const quitarApartado = async (id) => {
-    const contraseña = prompt(
-      "Introduce la contraseña para quitar el apartado:"
-    );
-    if (contraseña === "admin12345") {
-      try {
-        await deleteDoc(doc(db, "lotesApartados", id));
-        setMensaje(`Lote liberado con éxito.`);
-      } catch (error) {
-        console.error("Error al liberar el lote:", error);
-        setMensaje("Hubo un problema al liberar el lote.");
-      }
+  const verificarAdmin = () => {
+    if (passwordInput === "admin12345") {
+      setAdminAccess(true);
+      setAdminVisible(false);
+      setPasswordInput("");
+
+      setMensaje("Administrator mode activated.");
+      setTipoMensaje("success");
     } else {
-      alert("Contraseña incorrecta. No se quitó el apartado.");
+      setMensaje("Incorrect administrator password.");
+      setTipoMensaje("error");
+    }
+  };
+
+  const quitarApartado = async (id, loteId) => {
+    if (!adminAccess) return;
+
+    const confirmar = window.confirm(
+      `Are you sure you want to release Lot ${loteId}?`,
+    );
+
+    if (!confirmar) return;
+
+    try {
+      await deleteDoc(doc(db, "lotesApartados", id));
+
+      setMensaje(`Lot ${loteId} is now available.`);
+      setTipoMensaje("success");
+    } catch (error) {
+      console.error("Error al liberar el lote:", error);
+
+      setMensaje("There was a problem releasing the lot.");
+      setTipoMensaje("error");
     }
   };
 
   return (
-    <div className="todo-lotes">
-      <div className="contenedoradminyh1">
-        <div className="botonadimn">
-          <button className="admin-btn" onClick={() => setAdminVisible(true)}>
-            Admin
-          </button>
-        </div>
+    <section className="subdivision-page">
+      <div className="subdivision-wrapper">
+        <div className="subdivision-heading">
+          <span className="subdivision-eyebrow">CACTUS ACRES</span>
 
-        {adminVisible && (
-          <div className="modal">
-            <div className="modal-content">
-              <h2>Contraseña Administrador</h2>
-              <input
-                type="password"
-                placeholder="Ingresa la contraseña"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-              />
-              <div className="modal-buttons">
-                <button
-                  className="confirm-btn"
-                  onClick={() => {
-                    if (passwordInput === "admin12345") {
-                      setAdminAccess(true); // ✅ activa vista de admin
-                      setAdminVisible(false); // ✅ cierra el modal
-                      setPasswordInput("");
-                      setMensaje("Modo administrador activado.");
-                    } else {
-                      alert("Contraseña incorrecta");
-                    }
-                  }}
-                >
-                  Confirmar
-                </button>
-                <button
-                  className="cancel-btn"
-                  onClick={() => setAdminVisible(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="h1">
           <h1>Choose the place where your dreams come to life</h1>
-        </div>
-      </div>
 
-      <div className="lotesyinfo">
-        <div className="planouno">
-          <img src={Plano} alt="Plano de la subdivisión" />
-        </div>
-        <div className="tablatodo">
-          <div className="seleccion-lote">
-            <h1>Choose the lot you want</h1>
-            <select onChange={handleLoteChange} value={loteSeleccionado || ""}>
-              <option value="">Selecciona</option>
-              {[...Array(66)].map((_, index) => (
-                <option
-                  key={index + 1}
-                  value={index + 1}
-                  disabled={lotesApartados.some(
-                    (lote) => lote.loteId === index + 1
-                  )}
-                >
-                  Lote {index + 1}
-                </option>
-              ))}
-            </select>
-          </div>
+          <p>
+            Explore our subdivision map, select an available lot and send us
+            your information to begin the reservation process.
+          </p>
 
-          {mensaje && <div className="mensaje">{mensaje}</div>}
-
-          <div className="formulario-cliente">
-            <input
-              type="text"
-              name="nombre"
-              placeholder="Nombre Completo"
-              value={clienteInfo.nombre}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="telefono"
-              placeholder="Teléfono"
-              value={clienteInfo.telefono}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="direccion"
-              placeholder="Dirección Actual"
-              value={clienteInfo.direccion}
-              onChange={handleChange}
-            />
-            <button onClick={apartarLote}>Apartar Lote</button>
-          </div>
-
-          <div className="lotes-apartados">
-            <h2>Lotes Apartados:</h2>
-            {lotesApartados.length > 0 ? (
-              <ul>
-                {lotesApartados.map((lote) => (
-                  <li key={lote.id}>
-                    Lote {lote.loteId} -{" "}
-                    <button onClick={() => quitarApartado(lote.id)}>
-                      Liberar
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay lotes apartados.</p>
-            )}
-          </div>
-
-          {adminAccess && (
-            <div className="info-admin">
-              <h2>Información de Clientes Registrados:</h2>
-              <ul>
-                {clientesRegistrados.map((cliente) => (
-                  <li key={cliente.id}>
-                    <strong>Lote:</strong> {cliente.loteId} |{" "}
-                    <strong>Nombre:</strong> {cliente.nombre} |{" "}
-                    <strong>Teléfono:</strong> {cliente.telefono} |{" "}
-                    <strong>Dirección:</strong> {cliente.direccion}
-                  </li>
-                ))}
-              </ul>
+          <div className="subdivision-stats">
+            <div className="stat">
+              <strong>{TOTAL_LOTES}</strong>
+              <span>Total lots</span>
             </div>
+
+            <div className="stat">
+              <strong>{lotesDisponibles}</strong>
+              <span>Available</span>
+            </div>
+
+            <div className="stat">
+              <strong>{lotesApartados.length}</strong>
+              <span>Reserved</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="subdivision-grid">
+          <div className="plan-card">
+            <div className="plan-card-heading">
+              <div>
+                <span>Subdivision map</span>
+                <h2>Find your ideal lot</h2>
+              </div>
+
+              <span className="availability-badge">
+                {lotesDisponibles} available
+              </span>
+            </div>
+
+            <div className="plan-image-container">
+              <img
+                src={Plano}
+                alt="Cactus Acres subdivision lot map"
+                className="plan-image"
+              />
+            </div>
+
+            <p className="plan-help">
+              Use the lot selector to check current availability.
+            </p>
+          </div>
+
+          <div className="reservation-card">
+            <div className="reservation-heading">
+              <span>LOT RESERVATION</span>
+              <h2>Choose your lot</h2>
+              <p>Reserved lots are automatically disabled in the selector.</p>
+            </div>
+
+            <form onSubmit={apartarLote}>
+              <div className="form-group">
+                <label htmlFor="lote">Lot number</label>
+
+                <select
+                  id="lote"
+                  value={loteSeleccionado}
+                  onChange={handleLoteChange}
+                >
+                  <option value="">Select an available lot</option>
+
+                  {Array.from(
+                    { length: TOTAL_LOTES },
+                    (_, index) => index + 1,
+                  ).map((numeroLote) => (
+                    <option
+                      key={numeroLote}
+                      value={numeroLote}
+                      disabled={lotesApartadosIds.has(numeroLote)}
+                    >
+                      Lot {numeroLote}
+                      {lotesApartadosIds.has(numeroLote) ? " — Reserved" : ""}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="nombre">Full name</label>
+
+                <input
+                  id="nombre"
+                  type="text"
+                  name="nombre"
+                  placeholder="Your full name"
+                  value={clienteInfo.nombre}
+                  onChange={handleChange}
+                  autoComplete="name"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="telefono">Phone number</label>
+
+                <input
+                  id="telefono"
+                  type="tel"
+                  name="telefono"
+                  placeholder="Your phone number"
+                  value={clienteInfo.telefono}
+                  onChange={handleChange}
+                  autoComplete="tel"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="direccion">Current address</label>
+
+                <input
+                  id="direccion"
+                  type="text"
+                  name="direccion"
+                  placeholder="Your current address"
+                  value={clienteInfo.direccion}
+                  onChange={handleChange}
+                  autoComplete="street-address"
+                />
+              </div>
+
+              {mensaje && (
+                <div className={`mensaje ${tipoMensaje}`}>{mensaje}</div>
+              )}
+
+              <button
+                type="submit"
+                className="reserve-button"
+                disabled={enviando}
+              >
+                {enviando ? "Sending..." : "Reserve this lot"}
+              </button>
+            </form>
+
+            <div className="reservation-note">
+              <strong>Important:</strong> Sending this form registers the lot
+              reservation request in our system.
+            </div>
+          </div>
+        </div>
+
+        {adminAccess && (
+          <section className="admin-panel">
+            <div className="admin-panel-heading">
+              <div>
+                <span>ADMINISTRATION</span>
+                <h2>Reserved lots</h2>
+              </div>
+
+              <button
+                className="logout-admin"
+                onClick={() => setAdminAccess(false)}
+              >
+                Exit admin
+              </button>
+            </div>
+
+            {clientesRegistrados.length > 0 ? (
+              <div className="admin-list">
+                {clientesRegistrados
+                  .slice()
+                  .sort((a, b) => Number(a.loteId) - Number(b.loteId))
+                  .map((cliente) => (
+                    <article className="admin-lot-card" key={cliente.id}>
+                      <div className="admin-lot-number">
+                        Lot {cliente.loteId}
+                      </div>
+
+                      <div className="admin-client-info">
+                        <p>
+                          <strong>Name:</strong> {cliente.nombre}
+                        </p>
+
+                        <p>
+                          <strong>Phone:</strong> {cliente.telefono}
+                        </p>
+
+                        <p>
+                          <strong>Address:</strong> {cliente.direccion}
+                        </p>
+                      </div>
+
+                      <button
+                        className="release-button"
+                        onClick={() =>
+                          quitarApartado(cliente.id, cliente.loteId)
+                        }
+                      >
+                        Release
+                      </button>
+                    </article>
+                  ))}
+              </div>
+            ) : (
+              <p className="no-reservations">
+                There are currently no reserved lots.
+              </p>
+            )}
+          </section>
+        )}
+
+        <div className="admin-access">
+          {!adminAccess && (
+            <button
+              className="admin-btn"
+              onClick={() => {
+                setAdminVisible(true);
+                setPasswordInput("");
+              }}
+            >
+              Administrator access
+            </button>
           )}
         </div>
       </div>
-    </div>
+
+      {adminVisible && (
+        <div
+          className="modal"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) {
+              setAdminVisible(false);
+            }
+          }}
+        >
+          <div className="modal-content">
+            <span className="modal-label">CACTUS ACRES</span>
+
+            <h2>Administrator access</h2>
+
+            <p>Enter the administrator password to continue.</p>
+
+            <input
+              type="password"
+              placeholder="Password"
+              value={passwordInput}
+              onChange={(event) => setPasswordInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  verificarAdmin();
+                }
+              }}
+              autoFocus
+            />
+
+            <div className="modal-buttons">
+              <button
+                className="cancel-btn"
+                onClick={() => setAdminVisible(false)}
+              >
+                Cancel
+              </button>
+
+              <button className="confirm-btn" onClick={verificarAdmin}>
+                Enter
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
 

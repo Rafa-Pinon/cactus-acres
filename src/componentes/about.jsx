@@ -1,70 +1,111 @@
-import React, { useState } from "react";
+import React from "react";
 import "../about.css";
-import Imagenseguridad from "../imagenes/nuevoentradapuertaabierta.jpg";
-import imageninstalacion from "../imagenes/nochelum.jpg";
-import bulrvardnuevo from "../imagenes/nuevocaminograva.jpg";
-import Corredornuevo from "../imagenes/nuevocorredor.jpg";
+
+import entrada from "../imagenes/nuevoentradapuertaabierta.jpg";
+import instalaciones from "../imagenes/nochelum.jpg";
+import boulevard from "../imagenes/nuevocaminograva.jpg";
+import corredor from "../imagenes/nuevocorredor.jpg";
 
 function About() {
-  return (
-    <div className="informacion-de-proyecto">
-      <div className="seguridad">
-        <div className="imagenseguridad">
-          <img src={Imagenseguridad} alt="Example" />;
-        </div>
-        <div className="textoseguridad">
-          <p>
-            This is a gated residential community, designed for security and
-            privacy. It features a gated entrance limiting traffice flow
-          </p>
-        </div>
-      </div>
+  const sections = [
+    {
+      number: "01",
+      label: "SECURITY & PRIVACY",
+      title: "A private community designed for peace of mind",
+      text: "Cactus Acres is a gated residential community designed to provide security, privacy and controlled access. The private entrance helps reduce unnecessary traffic while creating a more peaceful environment for residents and visitors.",
+      image: entrada,
+      alt: "Gated entrance to Cactus Acres",
+    },
+    {
+      number: "02",
+      label: "INFRASTRUCTURE",
+      title: "Essential services ready for your future home",
+      text: "Our electrical infrastructure is installed underground to maintain a clean appearance while improving safety throughout the community. Cactus Acres also has a private well, quality water piping and a storage system designed to support the development.",
+      image: instalaciones,
+      alt: "Cactus Acres infrastructure at night",
+    },
+    {
+      number: "03",
+      label: "STREETS & ACCESS",
+      title: "A community planned for comfortable movement",
+      text: "The development includes a well-planned street layout designed for smooth and efficient traffic flow. The main access is designed as a boulevard, while sidewalks and secondary streets help provide safer and more comfortable movement throughout the community.",
+      image: boulevard,
+      alt: "Road and boulevard at Cactus Acres",
+    },
+    {
+      number: "04",
+      label: "OUTDOOR LIVING",
+      title: "Space to walk, exercise and enjoy the outdoors",
+      text: "A pathway around the neighborhood provides a comfortable place for walking, running and outdoor exercise. The perimeter design helps enhance privacy and security while maintaining the natural beauty and peaceful atmosphere of Cactus Acres.",
+      image: corredor,
+      alt: "Walking path at Cactus Acres",
+    },
+  ];
 
-      <div className="instalaciones">
-        <div className="textoinstalaciones">
+  return (
+    <section className="about-page">
+      <div className="about-wrapper">
+        <header className="about-header">
+          <span className="about-eyebrow">ABOUT CACTUS ACRES</span>
+
+          <h1>More than a lot. A place designed for your future.</h1>
+
           <p>
-            Our electrical installations are completely underground, providing
-            not only a more beautiful environment but also greater safety and
-            protection for your family. Additionally we have a private well so
-            the water supply is guaranteed thanks to high-quality piping and a
-            storage system designed to meet all your needs. Here, comfort and
-            peace of mind are assured. This is the perfect place to build the
-            home of your dreams! Don’t miss the opportunity to invest in a lot
-            that offers security, quality, and well-being.
+            Cactus Acres combines privacy, essential infrastructure, thoughtful
+            planning and outdoor living in a residential community designed for
+            families, future homes and long-term investment.
           </p>
+        </header>
+
+        <div className="about-sections">
+          {sections.map((section, index) => (
+            <article
+              className={`about-section ${index % 2 !== 0 ? "reverse" : ""}`}
+              key={section.number}
+            >
+              <div className="about-image-container">
+                <img
+                  src={section.image}
+                  alt={section.alt}
+                  className="about-image"
+                />
+
+                <div className="about-image-number">{section.number}</div>
+              </div>
+
+              <div className="about-content">
+                <span className="about-label">{section.label}</span>
+
+                <h2>{section.title}</h2>
+
+                <p>{section.text}</p>
+
+                <div className="about-divider"></div>
+              </div>
+            </article>
+          ))}
         </div>
-        <div className="imageninstalaciones">
-          <img src={imageninstalacion} alt="Example" />;
-        </div>
+
+        <section className="about-highlight">
+          <div className="about-highlight-content">
+            <span>CACTUS ACRES</span>
+
+            <h2>
+              Build with confidence in a community designed for the future.
+            </h2>
+
+            <p>
+              Explore the subdivision and discover which available lot is right
+              for you.
+            </p>
+          </div>
+
+          <a href="/subdivision" className="about-highlight-button">
+            View available lots
+          </a>
+        </section>
       </div>
-      <div className="calles-glorietas-banquetas">
-        <div className="imagencalles">
-          <img src={bulrvardnuevo} alt="Example" />;
-        </div>
-        <div className="textocalles">
-          <p>
-            We have an excellent street layout that ensures a smooth and
-            efficient traffic flow. The main street is designed as a boulevard,
-            with lanes divided by central lines to improve traffic organization.
-            Additionally, sidewalks on the sides of both main and secondary
-            streets, provide comfortable and safe mobility for everyone.
-          </p>
-        </div>
-      </div>
-      <div className="corredorybarda">
-        <div className="textocorredor">
-          <p>
-            We have a pathway or running trail around the neighborhood, perfect
-            for outdoor excercising or a peaceful walk. astetic perimeter wall
-            enhances the beaty of the area while providing security and privacy
-            for the community.
-          </p>
-        </div>
-        <div className="imagencorredor">
-          <img src={Corredornuevo} alt="Example" />;
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
 

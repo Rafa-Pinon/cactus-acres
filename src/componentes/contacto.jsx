@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { FaWhatsapp, FaEnvelope, FaPhone } from "react-icons/fa";
+import {
+  FaWhatsapp,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+
 import "../contact.css";
 
 function Contact() {
-  const phoneNumber = "6366991839"; // Definir phoneNumber antes de usarlo
+  const phoneNumber = "6366991839";
+
+  // Cambia este correo por el correo REAL que quieras usar.
+  const emailAddress = "josiahlebaron@yahoo.com";
 
   const [formData, setFormData] = useState({
     name: "",
@@ -12,98 +21,199 @@ function Contact() {
     message: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
     const { name, email, phone, message } = formData;
 
-    const whatsappMessage = `Hola, mi nombre es ${name}.%0AEmail: ${email}%0ATeléfono: ${phone}%0AMensaje: ${message}`;
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
+    const whatsappMessage = `
+Hello, I am contacting you from the Cactus Acres website.
 
-    window.open(whatsappURL, "_blank");
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+
+Message:
+${message}
+    `.trim();
+
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      whatsappMessage,
+    )}`;
+
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <div className="todo">
-      <div className="contact-container">
-        <h2>Contact Us</h2>
+    <section className="contact-page">
+      <div className="contact-wrapper">
+        <header className="contact-header">
+          <span className="contact-eyebrow">CACTUS ACRES</span>
 
-        <div className="contact-info">
+          <h1>We would be happy to hear from you</h1>
+
           <p>
-            <FaPhone /> <strong>Phone:</strong>{" "}
-            <a href={`tel:${phoneNumber}`}>{phoneNumber}</a>
+            Contact us for information about available lots, reservations or any
+            questions about Cactus Acres.
           </p>
-          <p>
-            <FaEnvelope /> <strong>Email:</strong>
-            <a href="mailto:rafapinongonzalez@live.com.mx">
-              {" "}
-              josiahlebaron@yahoo.com
+        </header>
+
+        <div className="contact-grid">
+          <div className="contact-information-card">
+            <span className="contact-card-label">CONTACT INFORMATION</span>
+
+            <h2>Let's talk about your future property</h2>
+
+            <p className="contact-description">
+              Reach us directly by phone, email or WhatsApp. We will be happy to
+              answer your questions.
+            </p>
+
+            <div className="contact-methods">
+              <a href={`tel:${phoneNumber}`} className="contact-method">
+                <div className="contact-icon">
+                  <FaPhone />
+                </div>
+
+                <div>
+                  <span>Phone</span>
+                  <strong>{phoneNumber}</strong>
+                </div>
+              </a>
+
+              <a href={`mailto:${emailAddress}`} className="contact-method">
+                <div className="contact-icon">
+                  <FaEnvelope />
+                </div>
+
+                <div>
+                  <span>Email</span>
+                  <strong>{emailAddress}</strong>
+                </div>
+              </a>
+
+              <div className="contact-method">
+                <div className="contact-icon">
+                  <FaMapMarkerAlt />
+                </div>
+
+                <div>
+                  <span>Development</span>
+                  <strong>Cactus Acres</strong>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href={`https://wa.me/${phoneNumber}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-whatsapp-button"
+            >
+              <FaWhatsapp />
+              Chat with us on WhatsApp
             </a>
-          </p>
+          </div>
+
+          <div className="contact-form-card">
+            <span className="contact-card-label">SEND A MESSAGE</span>
+
+            <h2>Tell us how we can help</h2>
+
+            <p className="contact-form-intro">
+              Complete the form and your message will open directly in WhatsApp
+              ready to send.
+            </p>
+
+            <form onSubmit={handleSubmit} className="contact-form">
+              <div className="contact-form-group">
+                <label htmlFor="name">Full name</label>
+
+                <input
+                  id="name"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your full name"
+                  autoComplete="name"
+                  required
+                />
+              </div>
+
+              <div className="contact-form-group">
+                <label htmlFor="email">Email address</label>
+
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="you@example.com"
+                  autoComplete="email"
+                  required
+                />
+              </div>
+
+              <div className="contact-form-group">
+                <label htmlFor="phone">Phone number</label>
+
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Your phone number"
+                  autoComplete="tel"
+                  required
+                />
+              </div>
+
+              <div className="contact-form-group">
+                <label htmlFor="message">Message</label>
+
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="I'm interested in learning more about..."
+                  required
+                />
+              </div>
+
+              <button type="submit" className="contact-submit-button">
+                <FaWhatsapp />
+                Send through WhatsApp
+              </button>
+            </form>
+          </div>
         </div>
 
-        <a
-          href={`https://wa.me/${phoneNumber}`}
-          className="whatsapp-button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaWhatsapp /> Chat on WhatsApp
-        </a>
+        <div className="contact-bottom">
+          <div>
+            <span>AVAILABLE LOTS</span>
 
-        <form onSubmit={handleSubmit} className="contact-form">
-          <div className="input-group">
-            <label>Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
+            <h2>Ready to find the right place for your future?</h2>
           </div>
 
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label>Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label>Message</label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <button type="submit" className="submit-btn">
-            Send Message
-          </button>
-        </form>
+          <a href="/subdivision" className="contact-lots-button">
+            View available lots
+          </a>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
